@@ -1,0 +1,6 @@
+Scraper
+-bs4
+-pandas
+-xlrd
+-sqlalchemy
+-pg8000
