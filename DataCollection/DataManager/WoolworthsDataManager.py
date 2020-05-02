@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 #File path
-csv_file = "//home//daman//Projects//plkn//Application//pythonScraper//wow.csv"
+csv_file = "//home//daman//Projects//plkn//Resources//wow.csv"
 
 #See if file is there
 if os.path.isfile(csv_file):
