@@ -252,6 +252,15 @@
           "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll": {}
         }
       },
+      "NodaTime/2.4.7": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/NodaTime.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/NodaTime.dll": {}
+        }
+      },
       "Npgsql/4.1.3": {
         "type": "package",
         "dependencies": {
@@ -277,6 +286,35 @@
         },
         "runtime": {
           "lib/netstandard2.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll": {}
+        }
+      },
+      "Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime/3.1.3": {
+        "type": "package",
+        "dependencies": {
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "3.1.3",
+          "Npgsql.NodaTime": "4.1.3"
+        },
+        "compile": {
+          "lib/netstandard2.0/Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime.dll": {}
+        },
+        "build": {
+          "build/netstandard2.0/Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime.targets": {}
+        }
+      },
+      "Npgsql.NodaTime/4.1.3": {
+        "type": "package",
+        "dependencies": {
+          "NodaTime": "2.4.7",
+          "Npgsql": "4.1.3"
+        },
+        "compile": {
+          "lib/netstandard2.0/Npgsql.NodaTime.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Npgsql.NodaTime.dll": {}
         }
       },
       "System.Collections.Immutable/1.7.0": {
@@ -722,6 +760,26 @@
         "microsoft.extensions.primitives.nuspec"
       ]
     },
+    "NodaTime/2.4.7": {
+      "sha512": "qXOjY8467lqeOLDOZa7TmHL4jvlMDz9xcQuMXgXW7fvVXJNMx1Z6DBVozK+FMzH4eHscccfpgJmv8ua9s8mtbA==",
+      "type": "package",
+      "path": "nodatime/2.4.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/NodaTime.dll",
+        "lib/net45/NodaTime.pdb",
+        "lib/net45/NodaTime.xml",
+        "lib/netstandard1.3/NodaTime.dll",
+        "lib/netstandard1.3/NodaTime.pdb",
+        "lib/netstandard1.3/NodaTime.xml",
+        "lib/netstandard2.0/NodaTime.dll",
+        "lib/netstandard2.0/NodaTime.pdb",
+        "lib/netstandard2.0/NodaTime.xml",
+        "nodatime.2.4.7.nupkg.sha512",
+        "nodatime.nuspec"
+      ]
+    },
     "Npgsql/4.1.3": {
       "sha512": "sWTXCb6WPPO7WEw4+1XoRqE49EdWmuyMA15LVbzV6jZgRxYWK8TbdniWMjguzmAgOZVYTmrCf+jsqPYoSqACvA==",
       "type": "package",
@@ -756,6 +814,38 @@
         "lib/netstandard2.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll",
         "npgsql.entityframeworkcore.postgresql.3.1.3.nupkg.sha512",
         "npgsql.entityframeworkcore.postgresql.nuspec",
+        "postgresql.png"
+      ]
+    },
+    "Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime/3.1.3": {
+      "sha512": "lChYqOz8nq7+QEeQ30sC9y8L73KKa/3OLOhvsJO9tDjrGVxynfoaKH7E1Km8p3hjeqjWZCLDrqorr+xRjGHG2w==",
+      "type": "package",
+      "path": "npgsql.entityframeworkcore.postgresql.nodatime/3.1.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/netstandard2.0/Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime.targets",
+        "lib/netstandard2.0/Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime.dll",
+        "npgsql.entityframeworkcore.postgresql.nodatime.3.1.3.nupkg.sha512",
+        "npgsql.entityframeworkcore.postgresql.nodatime.nuspec",
+        "postgresql.png"
+      ]
+    },
+    "Npgsql.NodaTime/4.1.3": {
+      "sha512": "8Kw1GxTOQmh+RzuHkG+0JxSBatdjK6WD6BCdBv8eDi3wNWXww+5qends719U3Do55+xHvqfgM+yATMghgTzTZQ==",
+      "type": "package",
+      "path": "npgsql.nodatime/4.1.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/Npgsql.NodaTime.dll",
+        "lib/net461/Npgsql.NodaTime.pdb",
+        "lib/net461/Npgsql.NodaTime.xml",
+        "lib/netstandard2.0/Npgsql.NodaTime.dll",
+        "lib/netstandard2.0/Npgsql.NodaTime.pdb",
+        "lib/netstandard2.0/Npgsql.NodaTime.xml",
+        "npgsql.nodatime.4.1.3.nupkg.sha512",
+        "npgsql.nodatime.nuspec",
         "postgresql.png"
       ]
     },
@@ -928,7 +1018,8 @@
       "Microsoft.EntityFrameworkCore >= 3.1.3",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.3",
       "Microsoft.Extensions.Configuration >= 3.1.3",
-      "Npgsql.EntityFrameworkCore.PostgreSQL >= 3.1.3"
+      "Npgsql.EntityFrameworkCore.PostgreSQL >= 3.1.3",
+      "Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime >= 3.1.3"
     ]
   },
   "packageFolders": {
@@ -937,11 +1028,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/daman/Projects/plkn/Application/WebApplication/Domain/Domain.csproj",
+      "projectUniqueName": "/home/daman/Projects/plkn/WebApplication/Domain/Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "/home/daman/Projects/plkn/Application/WebApplication/Domain/Domain.csproj",
+      "projectPath": "/home/daman/Projects/plkn/WebApplication/Domain/Domain.csproj",
       "packagesPath": "/home/daman/.nuget/packages/",
-      "outputPath": "/home/daman/Projects/plkn/Application/WebApplication/Domain/obj/",
+      "outputPath": "/home/daman/Projects/plkn/WebApplication/Domain/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/daman/.nuget/NuGet/NuGet.Config"
@@ -985,6 +1076,10 @@
             "version": "[3.1.3, )"
           },
           "Npgsql.EntityFrameworkCore.PostgreSQL": {
+            "target": "Package",
+            "version": "[3.1.3, )"
+          },
+          "Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime": {
             "target": "Package",
             "version": "[3.1.3, )"
           }

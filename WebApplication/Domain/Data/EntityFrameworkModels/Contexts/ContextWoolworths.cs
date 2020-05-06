@@ -9,13 +9,16 @@ namespace Domain.Data.EntityFrameworkModels.Contexts
 {
     public class ContextWoolworths :DbContext
     {
-        public ContextWoolworths(DbContextOptions<ContextWoolworths> options):base(options)
+
+       
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
+            optionsBuilder.UseNpgsql(@"HOST=localhost;DB=woolworths_db;UID=plkn;PWD=password;Port=5432;",
+            o => o.UseNodaTime());
         }
-
         protected override void OnModelCreating(ModelBuilder mB)
         {
+           
             mB.Entity<Woolworths>()
                  .Property(w => w.Id)
                  .IsRequired(true)
