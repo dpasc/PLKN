@@ -3,9 +3,7 @@ import os.path
 import pandas as pd
 import numpy as np
 import pg8000
-from sqlalchemy import MetaData
-from sqlalchemy import Table,Column, Integer,String,Date
-from sqlalchemy import create_engine, func
+from sqlalchemy import Table,Column, Integer,String,Date,create_engine, func,MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -22,6 +20,16 @@ def dataframe_difference(df1, df2, which=None):
         diff_df = comparison_df[comparison_df['_merge'] == which]
     return diff_df
 
+# move this function to date cleaner
+def date_formatter(data_frame):
+    data_frame['sub_date_foodco_products'] = pd.to_datetime(data_frame.sub_date_foodco_products)
+    data_frame['notice_of_probable_delisting'] = pd.to_datetime(data_frame.notice_of_probable_delisting)
+    data_frame['suppliers_engagement'] = pd.to_datetime(data_frame.suppliers_engagement)
+    data_frame['final_submission_for_branded'] = pd.to_datetime(data_frame.final_submission_for_branded)
+    data_frame['info_of_new_and_deleted_lines'] = pd.to_datetime(data_frame.info_of_new_and_deleted_lines)
+    data_frame['provide_all_wnas_waf_wpf_to_buyer'] = pd.to_datetime(data_frame.provide_all_wnas_waf_wpf_to_buyer)
+    data_frame['visual_planogram_due_to_stores'] = pd.to_datetime(data_frame.visual_planogram_due_to_stores)
+
 
 #Clean data
 
@@ -32,7 +40,7 @@ data_frame = pd.read_csv(csv)
 #-------- Configure ORM
 #Connect to DB
 try:
-    engine = create_engine('postgresql+pg8000://plkn:password@localhost:5432/woolworths_db', echo=True)
+    engine = create_engine('postgresql+pg8000://plkn:password@localhost:5432/woolworths_db', echo=False)
     Base = declarative_base()
     conn = engine.raw_connection()
     cursor = conn.cursor()
@@ -76,37 +84,45 @@ if(row_count < 1):
     #If no: insert all
     records = data_frame.replace({np.nan: None}, inplace=True)
     records = data_frame.to_dict(orient="records")
+    print(records)
     session.bulk_insert_mappings(CatalogRecord,records,return_defaults=True,render_nulls=True)
     session.commit()
 else: 
     #Pull out data from database into a new dataframe
     db_data_frame= pd.read_sql_table('category_dev_schedule',con=engine)
     del db_data_frame['id']
-    
-    #Compare data
-    #Concat method
-    
-    updated_data = pd.concat([data_frame,db_data_frame]).drop_duplicates(keep=False)
 
-'''
+    date_formatter(data_frame)
+
+
+    #Compare data
+    updated_data = dataframe_difference(db_data_frame,data_frame)
+    #Concat method
+'''  updated_data = pd.concat([data_frame,db_data_frame])
     updated_data = updated_data.reset_index(drop=True)
 
     updated_data_gpby = updated_data.groupby(list(updated_data.columns))
     idx = [x[0] for x in updated_data_gpby.groups.values() if len(x) !=1]
 
-    updated_data.reindex(idx)
-    
+    updated_data.reindex(idx)'''
 
-    updated_data = dataframe_difference(db_data_frame,data_frame)'''
+'''data_frame.to_csv('dataframe',index=False, header =False)
+db_data_frame.to_csv('databaseframe',index=False, header =False)
+'''
+#updated_data.to_csv('updateddataframe',index=False, header =True)
+
+
+
 
 print("CSV DATA===================================================================================")
 print(data_frame)
+
 print("DB DATA===================================================================================")
 print(db_data_frame)
 print("UPDATED===================================================================================")
 print(updated_data)
-updated_data.to_csv('//home//daman//Projects//plkn//DataCollection//DataManager//udf.csv', header=True, index=None, sep=',')
-    #Make changes to 
+
+#Make changes to 
                         
 
 
