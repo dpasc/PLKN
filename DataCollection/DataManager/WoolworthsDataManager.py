@@ -1,24 +1,16 @@
 import os
 import os.path
+import pg8000
 import pandas as pd
 import numpy as np
-import pg8000
+import sqlalchemy as alchemy
 from sqlalchemy import Table,Column, Integer,String,Date,create_engine, func,MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import text
+from sqlalchemy.sql import delete
 
-#Functions
-
-
-def dataframe_difference(df1, df2, which=None):
-    #Find rows which are different between two data frames
-    comparison_df = df1.merge(df2,indicator=True,how='outer')
-    
-    if which is None:
-        diff_df = comparison_df[comparison_df['_merge'] != 'both']
-    else:
-        diff_df = comparison_df[comparison_df['_merge'] == which]
-    return diff_df
+#Function(s)
 
 # move this function to date cleaner
 def date_formatter(data_frame):
@@ -29,7 +21,6 @@ def date_formatter(data_frame):
     data_frame['info_of_new_and_deleted_lines'] = pd.to_datetime(data_frame.info_of_new_and_deleted_lines)
     data_frame['provide_all_wnas_waf_wpf_to_buyer'] = pd.to_datetime(data_frame.provide_all_wnas_waf_wpf_to_buyer)
     data_frame['visual_planogram_due_to_stores'] = pd.to_datetime(data_frame.visual_planogram_due_to_stores)
-
 
 #Clean data
 
@@ -76,10 +67,7 @@ session = Session()
 row_count = session.query(CatalogRecord).count()
 
 
-print(row_count)
 #Check if data has ever been imported
-
-
 if(row_count < 1):
     #If no: insert all
     records = data_frame.replace({np.nan: None}, inplace=True)
@@ -87,64 +75,59 @@ if(row_count < 1):
     print(records)
     session.bulk_insert_mappings(CatalogRecord,records,return_defaults=True,render_nulls=True)
     session.commit()
+    engine.dispose()
+    
+    raise SystemExit  
 else: 
-    #Pull out data from database into a new dataframe
+    #Pull out data from database into a new dataframes
     db_data_frame= pd.read_sql_table('category_dev_schedule',con=engine)
     del db_data_frame['id']
-
     date_formatter(data_frame)
 
 
-    #Compare data
-    updated_data = dataframe_difference(db_data_frame,data_frame)
-    #Concat method
-'''  updated_data = pd.concat([data_frame,db_data_frame])
-    updated_data = updated_data.reset_index(drop=True)
-
-    updated_data_gpby = updated_data.groupby(list(updated_data.columns))
-    idx = [x[0] for x in updated_data_gpby.groups.values() if len(x) !=1]
-
-    updated_data.reindex(idx)'''
-
-'''data_frame.to_csv('dataframe',index=False, header =False)
-db_data_frame.to_csv('databaseframe',index=False, header =False)
-'''
-#updated_data.to_csv('updateddataframe',index=False, header =True)
-
-
-
-
-print("CSV DATA===================================================================================")
-print(data_frame)
-
-print("DB DATA===================================================================================")
-print(db_data_frame)
-print("UPDATED===================================================================================")
-print(updated_data)
-
-#Make changes to 
+    
                         
+#Prepare dataframes
+updated_data = db_data_frame.merge(data_frame, how='outer', indicator=True).loc[lambda x : x['_merge']=='right_only']
+data_to_remove = db_data_frame.merge(data_frame, how='outer', indicator=True).loc[lambda x : x['_merge']=='left_only']
 
+print(data_to_remove)
 
+#Check to see if there is new data
 #If yes: compare data for changes
+if( len(updated_data.index) > 0):
+    #Remove old data
+    for row_index,row in data_to_remove.iterrows():
+        delete_query = CatalogRecord.d
+    
+    #Add new
+    ''' records = updated_data.replace({np.nan: None}, inplace=True)
+    records = updated_data.to_dict(orient="records")
+
+    session.bulk_insert_mappings(CatalogRecord,records,return_defaults=True,render_nulls=True)'''
+ 
 
 
+else:
 
-
-#Replace old data with new
-
-
-
-
-#Close connection 
-engine.dispose()
-
+    #Close connection 
 
 
 
 
 #Print report
 
+'''
+print("CSV DATA===================================================================================")
+print(data_frame)
+print("DB DATA===================================================================================")
+print(db_data_frame)
+print("UPDATED===================================================================================")
+print(updated_data)
+print("UPDATED===================================================================================")
+print(data_to_remove)
+
+'''
 
 
 
