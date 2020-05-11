@@ -22,7 +22,15 @@ def date_formatter(data_frame):
     data_frame['provide_all_wnas_waf_wpf_to_buyer'] = pd.to_datetime(data_frame.provide_all_wnas_waf_wpf_to_buyer)
     data_frame['visual_planogram_due_to_stores'] = pd.to_datetime(data_frame.visual_planogram_due_to_stores)
 
-#Clean data
+#Close database connection and exit script
+def close_connection_and_exit(engine,connection):
+    if(engine):
+        connection.dispose
+        engine.dispose
+    raise SystemExit
+
+    
+
 
 #Pandas DataFrame
 csv = "//home//daman//Projects//plkn//Resources//wow.csv"
@@ -34,7 +42,6 @@ try:
     engine = create_engine('postgresql+pg8000://plkn:password@localhost:5432/woolworths_db', echo=False)
     Base = declarative_base()
     conn = engine.raw_connection()
-    cursor = conn.cursor()
     print("SQL Alchemy Configured: OK")
 except:
     print("SQL Alchemy Configured: Failed")
@@ -62,7 +69,7 @@ class CatalogRecord(Base):
 Session = sessionmaker(bind = engine)
 session = Session()
 
-
+#This needs to work
 #Pull up table 
 row_count = session.query(CatalogRecord).count()
 
@@ -73,15 +80,16 @@ if(row_count < 1):
     records = data_frame.replace({np.nan: None}, inplace=True)
     records = data_frame.to_dict(orient="records")
     print(records)
+    # This needs to work
     session.bulk_insert_mappings(CatalogRecord,records,return_defaults=True,render_nulls=True)
     session.commit()
-    engine.dispose()
-    
-    raise SystemExit  
+    close_connection_and_exit(engine,conn)
+
 else: 
     #Pull out data from database into a new dataframes
     db_data_frame= pd.read_sql_table('category_dev_schedule',con=engine)
     del db_data_frame['id']
+    del db_data_frame['date_added']
     date_formatter(data_frame)
 
 
@@ -109,8 +117,8 @@ if( len(updated_data.index) > 0):
 
 
 else:
-
-    #Close connection 
+    print("no data to remove")
+    close_connection_and_exit(engine,conn)
 
 
 
@@ -129,6 +137,8 @@ print(data_to_remove)
 
 '''
 
+print("Ended Alll Good!")
+close_connection_and_exit(engine,conn)
 
 
 
