@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(ContextWoolworths))]
-    [Migration("20200506053708_Changes to date format")]
-    partial class Changestodateformat
+    [Migration("20200511040558_Added timestamp")]
+    partial class Addedtimestamp
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,12 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnName("cm_buyer")
                         .HasColumnType("text");
+
+                    b.Property<LocalDate>("DateAdded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("date_added")
+                        .HasColumnType("date")
+                        .HasDefaultValueSql("current_date");
 
                     b.Property<LocalDate?>("FinalSubmissionDateForBrandedProducts")
                         .HasColumnName("final_submission_for_branded")
@@ -85,9 +91,10 @@ namespace Domain.Migrations
                         .HasColumnName("visual_planogram_due_to_stores")
                         .HasColumnType("date");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_woolworths");
 
-                    b.ToTable("Woolworths");
+                    b.ToTable("category_dev_schedule");
                 });
 #pragma warning restore 612, 618
         }

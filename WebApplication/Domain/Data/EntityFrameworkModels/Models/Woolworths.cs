@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Repositories.RepoInterfaces;
 using NodaTime;
 
 namespace Domain.Data.EntityFrameworkModels.Models
 {
-    public class Woolworths
+    public class Woolworths : IEntity
     {
         public int Id { get; set; }
         public string HOB { get; set; }
@@ -37,6 +38,8 @@ namespace Domain.Data.EntityFrameworkModels.Models
 
         //VISUAL PLANOGRAM DUE TO STORES
         public LocalDate VisualPlanogramDueToStores { get; set; }
+
+        public LocalDate DateAdded {get; set;}
 
     }
 
