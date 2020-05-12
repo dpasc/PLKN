@@ -88,8 +88,6 @@ if(row_count < 1):
 else: 
     #Pull out data from database into a new dataframes
     db_data_frame= pd.read_sql_table('category_dev_schedule',con=engine)
-    del db_data_frame['id']
-    del db_data_frame['date_added']
     date_formatter(data_frame)
 
 
@@ -99,14 +97,22 @@ else:
 updated_data = db_data_frame.merge(data_frame, how='outer', indicator=True).loc[lambda x : x['_merge']=='right_only']
 data_to_remove = db_data_frame.merge(data_frame, how='outer', indicator=True).loc[lambda x : x['_merge']=='left_only']
 
+
+
+print("Update data")
+print(updated_data)
+print("Data to remove")
 print(data_to_remove)
 
 #Check to see if there is new data
 #If yes: compare data for changes
 if( len(updated_data.index) > 0):
     #Remove old data
-    for row_index,row in data_to_remove.iterrows():
-        delete_query = CatalogRecord.d
+    for key,value in data_to_remove['id'].iteritems():
+
+        print(value)
+        item_to_delete = session.query(CatalogRecord).get(value)
+        session.delete(item_to_delete)
     
     #Add new
     ''' records = updated_data.replace({np.nan: None}, inplace=True)
@@ -122,7 +128,7 @@ else:
 
 
 
-
+session.commit()
 #Print report
 
 '''
