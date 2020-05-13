@@ -3,12 +3,10 @@ import os.path
 import pg8000
 import pandas as pd
 import numpy as np
-import sqlalchemy as alchemy
-from sqlalchemy import Table,Column, Integer,String,Date,create_engine, func,MetaData
+from sqlalchemy import Table,Column,Integer,String,Date,create_engine,func,MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.sql import text
-from sqlalchemy.sql import delete
+
 
 #Function(s)
 
@@ -23,14 +21,10 @@ def date_formatter(data_frame):
     data_frame['visual_planogram_due_to_stores'] = pd.to_datetime(data_frame.visual_planogram_due_to_stores)
 
 #Close database connection and exit script
-def close_connection_and_exit(engine,connection):
+def close_connection_and_exit(engine):
     if(engine):
-        connection.dispose
         engine.dispose
     raise SystemExit
-
-    
-
 
 #Pandas DataFrame
 csv = "//home//daman//Projects//plkn//Resources//wow.csv"
@@ -64,12 +58,11 @@ class CatalogRecord(Base):
     provide_all_wnas_waf_wpf_to_buyer = Column(Date, nullable=True) 
     visual_planogram_due_to_stores = Column(Date, nullable=False)
 
-
 #Create Session, Like context in EF
 Session = sessionmaker(bind = engine)
 session = Session()
 
-#This needs to work
+
 #Pull up table 
 row_count = session.query(CatalogRecord).count()
 
@@ -81,70 +74,38 @@ if(row_count < 1):
     records = data_frame.to_dict(orient="records")
     print(records)
     # This needs to work
-    session.bulk_insert_mappings(CatalogRecord,records,return_defaults=True,render_nulls=True)
+    session.bulk_insert_mappings(CatalogRecord,records,return_defaults=True,render_nulls=False)
     session.commit()
-    close_connection_and_exit(engine,conn)
+    close_connection_and_exit(engine)
 
 else: 
     #Pull out data from database into a new dataframes
     db_data_frame= pd.read_sql_table('category_dev_schedule',con=engine)
     date_formatter(data_frame)
-
-
-    
                         
 #Prepare dataframes
 updated_data = db_data_frame.merge(data_frame, how='outer', indicator=True).loc[lambda x : x['_merge']=='right_only']
 data_to_remove = db_data_frame.merge(data_frame, how='outer', indicator=True).loc[lambda x : x['_merge']=='left_only']
 
 
-
-print("Update data")
-print(updated_data)
-print("Data to remove")
-print(data_to_remove)
-
 #Check to see if there is new data
 #If yes: compare data for changes
 if( len(updated_data.index) > 0):
     #Remove old data
     for key,value in data_to_remove['id'].iteritems():
-
-        print(value)
         item_to_delete = session.query(CatalogRecord).get(value)
         session.delete(item_to_delete)
     
     #Add new
-    ''' records = updated_data.replace({np.nan: None}, inplace=True)
-    records = updated_data.to_dict(orient="records")
+    del updated_data['id']
+    del updated_data['_merge']
+    del updated_data['date_added']
+    updated_data.to_sql("category_dev_schedule", con=engine,if_exists='append', index=False)
+    #Commit changes
+    session.commit()
 
-    session.bulk_insert_mappings(CatalogRecord,records,return_defaults=True,render_nulls=True)'''
- 
-
-
-else:
-    print("no data to remove")
-    close_connection_and_exit(engine,conn)
-
-
-
-session.commit()
 #Print report
-
-'''
-print("CSV DATA===================================================================================")
-print(data_frame)
-print("DB DATA===================================================================================")
-print(db_data_frame)
-print("UPDATED===================================================================================")
-print(updated_data)
-print("UPDATED===================================================================================")
-print(data_to_remove)
-
-'''
-
-print("Ended Alll Good!")
-close_connection_and_exit(engine,conn)
+close_connection_and_exit(engine)
 
 
 
