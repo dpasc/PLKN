@@ -1028,11 +1028,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/daman/Projects/plkn/WebApplication/Domain/Domain.csproj",
+      "projectUniqueName": "/home/daman/Projects/plkn/ServerSide/Domain/Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "/home/daman/Projects/plkn/WebApplication/Domain/Domain.csproj",
+      "projectPath": "/home/daman/Projects/plkn/ServerSide/Domain/Domain.csproj",
       "packagesPath": "/home/daman/.nuget/packages/",
-      "outputPath": "/home/daman/Projects/plkn/WebApplication/Domain/obj/",
+      "outputPath": "/home/daman/Projects/plkn/ServerSide/Domain/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/daman/.nuget/NuGet/NuGet.Config"

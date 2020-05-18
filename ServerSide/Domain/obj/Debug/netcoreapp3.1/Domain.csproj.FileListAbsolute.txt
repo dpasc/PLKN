@@ -31,3 +31,14 @@ C:/Users/Damian/Projects/plkn/Application/WebApplication/Domain/obj/Debug/netcor
 /home/daman/Projects/plkn/WebApplication/Domain/obj/Debug/netcoreapp3.1/Domain.dll
 /home/daman/Projects/plkn/WebApplication/Domain/obj/Debug/netcoreapp3.1/Domain.pdb
 /home/daman/Projects/plkn/WebApplication/Domain/obj/Debug/netcoreapp3.1/EFCoreNpgsqlNodaTime.cs
+/home/daman/Projects/plkn/ServerSide/Domain/bin/Debug/netcoreapp3.1/Domain.deps.json
+/home/daman/Projects/plkn/ServerSide/Domain/bin/Debug/netcoreapp3.1/Domain.runtimeconfig.json
+/home/daman/Projects/plkn/ServerSide/Domain/bin/Debug/netcoreapp3.1/Domain.runtimeconfig.dev.json
+/home/daman/Projects/plkn/ServerSide/Domain/bin/Debug/netcoreapp3.1/Domain.dll
+/home/daman/Projects/plkn/ServerSide/Domain/bin/Debug/netcoreapp3.1/Domain.pdb
+/home/daman/Projects/plkn/ServerSide/Domain/obj/Debug/netcoreapp3.1/Domain.csprojAssemblyReference.cache
+/home/daman/Projects/plkn/ServerSide/Domain/obj/Debug/netcoreapp3.1/EFCoreNpgsqlNodaTime.cs
+/home/daman/Projects/plkn/ServerSide/Domain/obj/Debug/netcoreapp3.1/Domain.AssemblyInfoInputs.cache
+/home/daman/Projects/plkn/ServerSide/Domain/obj/Debug/netcoreapp3.1/Domain.AssemblyInfo.cs
+/home/daman/Projects/plkn/ServerSide/Domain/obj/Debug/netcoreapp3.1/Domain.dll
+/home/daman/Projects/plkn/ServerSide/Domain/obj/Debug/netcoreapp3.1/Domain.pdb

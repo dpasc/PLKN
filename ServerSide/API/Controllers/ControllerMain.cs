@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Domain.Repositories.RepoInterfaces;
-using Domain.Repositories.RepositoryModels;
+
 
 namespace API.Controllers
 {
@@ -15,7 +12,6 @@ namespace API.Controllers
         where TEntity :class, IEntity 
         where TRepository : IRepository<TEntity>
     {
-
         internal readonly TRepository _repository;
 
         public ControllerMain(TRepository repository)

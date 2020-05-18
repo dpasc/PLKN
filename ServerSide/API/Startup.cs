@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Domain.Data.EntityFrameworkModels.Contexts;
 using Domain.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using NodaTime;
+using NodaTime.Serialization.JsonNet; 
 
 namespace API
 {
@@ -20,6 +15,8 @@ namespace API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+        
         }
 
         public IConfiguration Configuration { get; }
@@ -30,6 +27,16 @@ namespace API
             services.AddControllers();
             services.AddDbContext<ContextWoolworths>();
             services.AddScoped<RepositoryWoolworths>();
+
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .AddNewtonsoftJson(options => 
+                options.SerializerSettings.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb)
+                );
+
+        
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

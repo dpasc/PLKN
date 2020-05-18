@@ -6,6 +6,8 @@ using Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Components.Routing;
 using Domain.Repositories.RepoInterfaces;
+using Newtonsoft.Json;
+
 
 namespace API.Controllers{
 
@@ -18,15 +20,12 @@ namespace API.Controllers{
         }
 
     [HttpGet]
-        public override async Task<IEnumerable<IEntity>> Get()
+        public override async Task<IEnumerable<IEntity>>  Get()
         {
-            return await _repository.GetAllRecords();
+            return  await _repository.GetAllRecords();
         }
 
     }
-
-
-
 
 
 
