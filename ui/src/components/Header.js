@@ -9,7 +9,7 @@ function Header()
     return(
     <header>
       <Image src={LOGOPNG} alt='logo missing' id='logo' />
-      <h1>PLKN</h1>
+      <h1 id="logotext">PLKN</h1>
     </header>);
 }
 

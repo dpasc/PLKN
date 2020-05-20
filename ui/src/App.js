@@ -1,15 +1,14 @@
 import React from 'react';
 import './App.css';
-import Image from './images/Image'
-import {LOGOPNG} from './images/ImageIndex'
+import Header from './components/Header'
+import Body from './components/body/Body'
+
 
 function App() {
   return (
     <div className="App">
-      <Image src={LOGOPNG} alt='puppy missing' id='logo' />
-      <h1>PLKN</h1>
-
-
+      <Header/>
+      <Body/>
     </div>
   );
 }

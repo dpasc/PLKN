@@ -6,7 +6,7 @@ function Image(props){
         <img 
         src={props.src} 
         alt={props.alt} 
-        class={props.class}
+        className={props.class}
         id={props.id}
         />
     )
