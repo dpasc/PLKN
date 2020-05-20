@@ -1,0 +1,11 @@
+#main{
+    background-color: rgba(204, 216, 230, 0.507);
+    border:3px solid rgb(90, 93, 98);
+    border-radius: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    padding-top:10px;
+
+}

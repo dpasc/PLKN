@@ -1,0 +1,9 @@
+Scraper
+-bs4
+-pandas
+-xlrd
+-sqlalchemy
+-pg8000
+
+
+Credit logo https://freesvg.org/pelican-bird-vector-clip-art
