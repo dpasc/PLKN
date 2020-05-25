@@ -27,7 +27,7 @@ def close_connection_and_exit(engine):
     raise SystemExit
 
 #Pandas DataFrame
-csv = "//home//daman//Projects//plkn//Resources//wow.csv"
+csv = "~//Projects//plkn//Resources//wow.csv"
 data_frame = pd.read_csv(csv)
 
 #-------- Configure ORM
@@ -72,7 +72,6 @@ if(row_count < 1):
     #If no: insert all
     records = data_frame.replace({np.nan: None}, inplace=True)
     records = data_frame.to_dict(orient="records")
-    print(records)
     # This needs to work
     session.bulk_insert_mappings(CatalogRecord,records,return_defaults=True,render_nulls=False)
     session.commit()
